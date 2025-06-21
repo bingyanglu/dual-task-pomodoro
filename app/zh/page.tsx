@@ -18,29 +18,24 @@ import {
   ChevronUp,
   SkipForward,
 } from "lucide-react"
-import { StatsView } from "./components/stats-view"
-import { TaskList } from "./components/task-list"
-import { TopNavigation } from "./components/top-navigation"
-import { usePomodoro } from "./hooks/use-pomodoro"
-import { useTasks } from "./hooks/use-tasks"
-import { useTheme } from "./hooks/use-theme"
-import { useLanguage } from "./hooks/use-language"
-import { TaskCompletionDialog } from "./components/task-completion-dialog"
-import { translations } from "./i18n/translations"
+import { StatsView } from "../components/stats-view"
+import { TaskList } from "../components/task-list"
+import { TopNavigation } from "../components/top-navigation"
+import { usePomodoro } from "../hooks/use-pomodoro"
+import { useTasks } from "../hooks/use-tasks"
+import { useTheme } from "../hooks/use-theme"
+import { useLanguage } from "../hooks/use-language"
+import { TaskCompletionDialog } from "../components/task-completion-dialog"
+import { translations } from "../i18n/translations"
 import { Switch } from "@/components/ui/switch"
 
-export default function PomodoroApp() {
+export default function PomodoroAppZh() {
   const { tasks, activeTasks, addTask, toggleTask, deleteTask, editTask, addTimeToTask, reorderTasks } = useTasks()
   const { theme, toggleTheme } = useTheme()
   const { language, toggleLanguage } = useLanguage()
 
-  // 强制设置为英文（根路径默认英文）
-  const t = translations["en"]
-
-  // 如果当前语言不是英文，重定向到英文版本
-  if (language !== "en") {
-    // 这里可以添加重定向逻辑，但为了简化，我们直接强制使用英文
-  }
+  // 强制设置为中文
+  const t = translations["zh"]
 
   const {
     currentTask,
@@ -97,7 +92,7 @@ export default function PomodoroApp() {
           onToggleLanguage={toggleLanguage}
         />
         <div className="max-w-6xl mx-auto p-4">
-          <StatsView language="en" />
+          <StatsView language="zh" />
         </div>
       </div>
     )
@@ -372,7 +367,7 @@ export default function PomodoroApp() {
               onDeleteTask={deleteTask}
               onEditTask={editTask}
               onReorderTasks={reorderTasks}
-              language="en"
+              language="zh"
               dualTaskMode={settings.dualTaskMode}
               todayCount={todayCount}
               currentRound={currentRound}
@@ -511,9 +506,9 @@ export default function PomodoroApp() {
           timeLeft={confirmationTimeLeft}
           onExtend={extendCurrentTask}
           onBreak={confirmBreak}
-          language="en"
+          language="zh"
         />
       </div>
     </div>
   )
-}
+} 

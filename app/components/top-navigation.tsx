@@ -2,14 +2,33 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import { Settings, BarChart3, Brain, Moon, Sun, X, Languages } from "lucide-react"
+import {
+  Settings,
+  BarChart3,
+  Sun,
+  Moon,
+  Languages,
+  ChevronDown,
+  Check,
+  Brain,
+} from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useRouter } from "next/navigation"
+import { Language } from "../hooks/use-language"
 import type { PomodoroSettings } from "../hooks/use-pomodoro"
 import type { Theme } from "../hooks/use-theme"
-import type { Language } from "../hooks/use-language"
 import { translations } from "../i18n/translations"
 
 interface TopNavigationProps {
@@ -31,207 +50,218 @@ export function TopNavigation({
   language,
   onToggleLanguage,
 }: TopNavigationProps) {
-  const [settingsOpen, setSettingsOpen] = useState(false)
-  const [localSettings, setLocalSettings] = useState<PomodoroSettings>(settings)
+  const [showSettings, setShowSettings] = useState(false)
+  const router = useRouter()
 
   const t = translations[language]
 
-  const handleSave = () => {
-    onSettingsChange(localSettings)
-    setSettingsOpen(false)
-  }
-
-  const resetToDefaults = () => {
-    const defaultSettings: PomodoroSettings = {
-      pomoDuration: 25,
-      shortBreakDuration: 5,
-      longBreakDuration: 15,
-      soundEnabled: true,
-      vibrationEnabled: true,
-      switchAfterPomodoros: 2,
-      dualTaskMode: true,
+  const handleLanguageChange = (newLanguage: Language) => {
+    if (newLanguage === "en") {
+      router.push("/")
+    } else if (newLanguage === "zh") {
+      router.push("/zh")
+    } else if (newLanguage === "ja") {
+      router.push("/ja")
     }
-    setLocalSettings(defaultSettings)
   }
 
-  const handleOpenSettings = () => {
-    setLocalSettings(settings) // 重新同步设置
-    setSettingsOpen(true)
+  const getLanguageLabel = (lang: Language) => {
+    switch (lang) {
+      case "en":
+        return "English"
+      case "zh":
+        return "中文"
+      case "ja":
+        return "日本語"
+      default:
+        return "English"
+    }
+  }
+
+  const getLanguageFlag = (lang: Language) => {
+    switch (lang) {
+      case "en":
+        return "🇺🇸"
+      case "zh":
+        return "🇨🇳"
+      case "ja":
+        return "🇯🇵"
+      default:
+        return "🇺🇸"
+    }
   }
 
   return (
-    <>
-      <nav className="bg-white dark:bg-gray-900 border-b border-slate-200 dark:border-gray-700 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo and Title */}
-            <div className="flex items-center gap-3">
+    <div className="bg-white dark:bg-gray-800 border-b border-slate-200 dark:border-gray-700 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 py-3">
+        <div className="flex items-center justify-between">
+          {/* Left side - App title and stats */}
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <Brain className="w-5 h-5 text-white" />
               </div>
-              <div>
-                <h1 className="text-xl font-bold text-slate-800 dark:text-white">
+              <div className="hidden sm:block">
+                <div className="font-semibold text-slate-800 dark:text-white text-lg">
                   <span className="hidden sm:inline">{t.appTitle}</span>
-                  <span className="sm:hidden">{language === "zh" ? "双任务番茄" : "Dual Pomodoro"}</span>
-                </h1>
-                <p className="text-xs text-slate-600 dark:text-gray-400">
+                  <span className="sm:hidden">{language === "zh" ? "双任务番茄" : language === "ja" ? "デュアルタスクポモドーロ" : "Dual Pomodoro"}</span>
+                </div>
+                <div className="text-xs text-slate-600 dark:text-gray-400">
                   <span className="hidden sm:inline">{t.appSubtitle}</span>
-                  <span className="sm:hidden">{language === "zh" ? "ADHD 友好" : "ADHD Friendly"}</span>
-                </p>
-              </div>
-            </div>
-
-            {/* Stats */}
-            <div className="flex items-center gap-6">
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2">
-                <Button onClick={onShowStats} variant="outline" size="sm">
-                  <BarChart3 className="w-4 h-4 sm:mr-2" />
-                  <span className="hidden sm:inline">{t.statistics}</span>
-                </Button>
-
-                {/* Language Toggle */}
-                <Button onClick={onToggleLanguage} variant="outline" size="sm" title="Switch Language">
-                  <Languages className="w-4 h-4 sm:mr-1" />
-                  <span className="hidden sm:inline">{language === "en" ? "中文" : "EN"}</span>
-                </Button>
-
-                {/* Theme Toggle */}
-                <Button onClick={onToggleTheme} variant="outline" size="sm">
-                  {theme === "light" ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-                </Button>
-
-                {/* Settings Button */}
-                <Button onClick={handleOpenSettings} variant="outline" size="sm">
-                  <Settings className="w-4 h-4 sm:mr-2" />
-                  <span className="hidden sm:inline">{t.settings}</span>
-                </Button>
+                  <span className="sm:hidden">{language === "zh" ? "ADHD 友好" : language === "ja" ? "ADHDに優しい作業法" : "ADHD Friendly"}</span>
+                </div>
               </div>
             </div>
           </div>
+
+          {/* Right side - Actions */}
+          <div className="flex items-center gap-2">
+            {/* Language Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <span className="text-lg">{getLanguageFlag(language)}</span>
+                  <span className="hidden sm:inline">{getLanguageLabel(language)}</span>
+                  <ChevronDown className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuItem onClick={() => handleLanguageChange("en")} className="gap-2">
+                  <span className="text-lg">🇺🇸</span>
+                  <span>English</span>
+                  {language === "en" && <Check className="w-4 h-4 ml-auto" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange("zh")} className="gap-2">
+                  <span className="text-lg">🇨🇳</span>
+                  <span>中文</span>
+                  {language === "zh" && <Check className="w-4 h-4 ml-auto" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange("ja")} className="gap-2">
+                  <span className="text-lg">🇯🇵</span>
+                  <span>日本語</span>
+                  {language === "ja" && <Check className="w-4 h-4 ml-auto" />}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Theme Toggle */}
+            <Button onClick={onToggleTheme} variant="outline" size="sm" title="Toggle Theme">
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </Button>
+
+            {/* Statistics Button */}
+            <Button onClick={onShowStats} variant="outline" size="sm" title="View Statistics">
+              <BarChart3 className="w-4 h-4 sm:mr-1" />
+              <span className="hidden sm:inline">
+                {language === "en" && "Statistics"}
+                {language === "zh" && "统计"}
+                {language === "ja" && "統計"}
+              </span>
+            </Button>
+
+            {/* Settings Button */}
+            <Button onClick={() => setShowSettings(!showSettings)} variant="outline" size="sm" title="Settings">
+              <Settings className="w-4 h-4 sm:mr-1" />
+              <span className="hidden sm:inline">
+                {language === "en" && "Settings"}
+                {language === "zh" && "设置"}
+                {language === "ja" && "設定"}
+              </span>
+            </Button>
+          </div>
         </div>
-      </nav>
 
-      {/* Settings Modal */}
-      {settingsOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <Card className="w-full max-w-md mx-auto bg-white dark:bg-gray-800 border-slate-200 dark:border-gray-700 max-h-[90vh] overflow-y-auto">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2 text-slate-800 dark:text-white">
-                  <Settings className="w-5 h-5" />
-                  {t.pomodoroSettings}
-                </CardTitle>
-                <Button onClick={() => setSettingsOpen(false)} variant="ghost" size="sm" className="h-8 w-8 p-0">
-                  <X className="w-4 h-4" />
-                </Button>
-              </div>
-              <CardDescription className="dark:text-gray-400">{t.adjustTimings}</CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-6">
-              {/* Time Settings */}
-              <div className="space-y-4">
-                <h3 className="font-semibold text-slate-800 dark:text-white">{t.timeSettings}</h3>
-
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="pomoDuration" className="dark:text-gray-300">
-                      {t.pomodoroDuration}
-                    </Label>
-                    <Input
-                      id="pomoDuration"
-                      type="number"
-                      min="5"
-                      max="60"
-                      value={localSettings.pomoDuration}
-                      onChange={(e) =>
-                        setLocalSettings((prev) => ({
-                          ...prev,
-                          pomoDuration: Number.parseInt(e.target.value) || 25,
-                        }))
-                      }
-                      className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="shortBreak" className="dark:text-gray-300">
-                      {t.shortBreakDuration}
-                    </Label>
-                    <Input
-                      id="shortBreak"
-                      type="number"
-                      min="1"
-                      max="15"
-                      value={localSettings.shortBreakDuration}
-                      onChange={(e) =>
-                        setLocalSettings((prev) => ({
-                          ...prev,
-                          shortBreakDuration: Number.parseInt(e.target.value) || 5,
-                        }))
-                      }
-                      className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="longBreak" className="dark:text-gray-300">
-                      {t.longBreakDuration}
-                    </Label>
-                    <Input
-                      id="longBreak"
-                      type="number"
-                      min="5"
-                      max="30"
-                      value={localSettings.longBreakDuration}
-                      onChange={(e) =>
-                        setLocalSettings((prev) => ({
-                          ...prev,
-                          longBreakDuration: Number.parseInt(e.target.value) || 15,
-                        }))
-                      }
-                      className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="switchAfter" className="dark:text-gray-300">
-                      {t.switchAfterPomodoros}
-                    </Label>
-                    <Input
-                      id="switchAfter"
-                      type="number"
-                      min="1"
-                      max="4"
-                      value={localSettings.switchAfterPomodoros}
-                      onChange={(e) =>
-                        setLocalSettings((prev) => ({
-                          ...prev,
-                          switchAfterPomodoros: Number.parseInt(e.target.value) || 2,
-                        }))
-                      }
-                      className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    />
-                  </div>
-                </div>
+        {/* Settings Panel */}
+        {showSettings && (
+          <div className="mt-4 p-4 bg-slate-50 dark:bg-gray-700 rounded-lg border border-slate-200 dark:border-gray-600">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="pomoDuration">
+                  {language === "en" && "Pomodoro Duration (minutes)"}
+                  {language === "zh" && "番茄时长 (分钟)"}
+                  {language === "ja" && "ポモドーロ時間（分）"}
+                </Label>
+                <Input
+                  id="pomoDuration"
+                  type="number"
+                  value={settings.pomoDuration}
+                  onChange={(e) =>
+                    onSettingsChange({
+                      ...settings,
+                      pomoDuration: parseInt(e.target.value),
+                    })
+                  }
+                  min="1"
+                  max="60"
+                />
               </div>
 
-              <Separator className="dark:bg-gray-600" />
-
-              {/* Action Buttons */}
-              <div className="flex gap-3">
-                <Button onClick={handleSave} className="flex-1">
-                  {t.saveSettings}
-                </Button>
-                <Button onClick={resetToDefaults} variant="outline" className="dark:border-gray-600 dark:text-gray-300">
-                  {t.resetToDefaults}
-                </Button>
+              <div className="space-y-2">
+                <Label htmlFor="shortBreakDuration">
+                  {language === "en" && "Short Break (minutes)"}
+                  {language === "zh" && "短休息 (分钟)"}
+                  {language === "ja" && "短い休憩（分）"}
+                </Label>
+                <Input
+                  id="shortBreakDuration"
+                  type="number"
+                  value={settings.shortBreakDuration}
+                  onChange={(e) =>
+                    onSettingsChange({
+                      ...settings,
+                      shortBreakDuration: parseInt(e.target.value),
+                    })
+                  }
+                  min="1"
+                  max="30"
+                />
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-    </>
+
+              <div className="space-y-2">
+                <Label htmlFor="longBreakDuration">
+                  {language === "en" && "Long Break (minutes)"}
+                  {language === "zh" && "长休息 (分钟)"}
+                  {language === "ja" && "長い休憩（分）"}
+                </Label>
+                <Input
+                  id="longBreakDuration"
+                  type="number"
+                  value={settings.longBreakDuration}
+                  onChange={(e) =>
+                    onSettingsChange({
+                      ...settings,
+                      longBreakDuration: parseInt(e.target.value),
+                    })
+                  }
+                  min="1"
+                  max="60"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="switchAfterPomodoros">
+                  {language === "en" && "Switch after pomodoros"}
+                  {language === "zh" && "每几个番茄后切换任务"}
+                  {language === "ja" && "何個のポモドーロ後にタスクを切り替える"}
+                </Label>
+                <Input
+                  id="switchAfterPomodoros"
+                  type="number"
+                  value={settings.switchAfterPomodoros}
+                  onChange={(e) =>
+                    onSettingsChange({
+                      ...settings,
+                      switchAfterPomodoros: parseInt(e.target.value),
+                    })
+                  }
+                  min="1"
+                  max="10"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
