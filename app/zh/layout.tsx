@@ -16,9 +16,5 @@ export default function ZhLayout({
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <html lang="zh-CN">
-      <body className={inter.className}>{children}</body>
-    </html>
-  )
+  return <>{children}</>
 } 
