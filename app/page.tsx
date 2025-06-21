@@ -82,8 +82,6 @@ export default function PomodoroApp() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800">
         <TopNavigation
-          todayCount={todayCount}
-          currentRound={currentRound}
           settings={settings}
           onSettingsChange={updateSettings}
           onShowStats={() => setShowStats(false)}
@@ -103,8 +101,6 @@ export default function PomodoroApp() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800">
       {/* Top Navigation */}
       <TopNavigation
-        todayCount={todayCount}
-        currentRound={currentRound}
         settings={settings}
         onSettingsChange={updateSettings}
         onShowStats={() => setShowStats(true)}
@@ -372,6 +368,8 @@ export default function PomodoroApp() {
               onReorderTasks={reorderTasks}
               language={language}
               dualTaskMode={settings.dualTaskMode}
+              todayCount={todayCount}
+              currentRound={currentRound}
             />
 
             {/* Explanation Section - Only show in dual task mode on mobile */}

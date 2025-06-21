@@ -13,8 +13,6 @@ import type { Language } from "../hooks/use-language"
 import { translations } from "../i18n/translations"
 
 interface TopNavigationProps {
-  todayCount: number
-  currentRound: number
   settings: PomodoroSettings
   onSettingsChange: (settings: PomodoroSettings) => void
   onShowStats: () => void
@@ -25,8 +23,6 @@ interface TopNavigationProps {
 }
 
 export function TopNavigation({
-  todayCount,
-  currentRound,
   settings,
   onSettingsChange,
   onShowStats,
@@ -74,40 +70,30 @@ export function TopNavigation({
                 <Brain className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-slate-800 dark:text-white">{t.appTitle}</h1>
-                <p className="text-xs text-slate-600 dark:text-gray-400">{t.appSubtitle}</p>
+                <h1 className="text-xl font-bold text-slate-800 dark:text-white">
+                  <span className="hidden sm:inline">{t.appTitle}</span>
+                  <span className="sm:hidden">{language === "zh" ? "双任务番茄" : "Dual Pomodoro"}</span>
+                </h1>
+                <p className="text-xs text-slate-600 dark:text-gray-400">
+                  <span className="hidden sm:inline">{t.appSubtitle}</span>
+                  <span className="sm:hidden">{language === "zh" ? "ADHD 友好" : "ADHD Friendly"}</span>
+                </p>
               </div>
             </div>
 
             {/* Stats */}
             <div className="flex items-center gap-6">
-              <div className="flex items-center gap-4">
-                <div className="text-center">
-                  <div className="text-lg font-bold text-blue-600 dark:text-blue-400">{todayCount}</div>
-                  <div className="text-xs text-slate-600 dark:text-gray-400">{t.todayPomodoros}</div>
-                </div>
-                <Separator orientation="vertical" className="h-8" />
-                <div className="text-center">
-                  <div className="text-lg font-bold text-slate-700 dark:text-gray-300">
-                    {language === "zh"
-                      ? `第 ${Math.floor((currentRound - 1) / 2) + 1} 轮`
-                      : `${t.round} ${Math.floor((currentRound - 1) / 2) + 1}`}
-                  </div>
-                  <div className="text-xs text-slate-600 dark:text-gray-400">{t.currentRound}</div>
-                </div>
-              </div>
-
               {/* Action Buttons */}
               <div className="flex items-center gap-2">
                 <Button onClick={onShowStats} variant="outline" size="sm">
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  {t.statistics}
+                  <BarChart3 className="w-4 h-4 sm:mr-2" />
+                  <span className="hidden sm:inline">{t.statistics}</span>
                 </Button>
 
                 {/* Language Toggle */}
                 <Button onClick={onToggleLanguage} variant="outline" size="sm" title="Switch Language">
-                  <Languages className="w-4 h-4 mr-1" />
-                  {language === "en" ? "中文" : "EN"}
+                  <Languages className="w-4 h-4 sm:mr-1" />
+                  <span className="hidden sm:inline">{language === "en" ? "中文" : "EN"}</span>
                 </Button>
 
                 {/* Theme Toggle */}
@@ -117,8 +103,8 @@ export function TopNavigation({
 
                 {/* Settings Button */}
                 <Button onClick={handleOpenSettings} variant="outline" size="sm">
-                  <Settings className="w-4 h-4 mr-2" />
-                  {t.settings}
+                  <Settings className="w-4 h-4 sm:mr-2" />
+                  <span className="hidden sm:inline">{t.settings}</span>
                 </Button>
               </div>
             </div>

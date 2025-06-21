@@ -23,6 +23,8 @@ interface TaskListProps {
   onReorderTasks: (startIndex: number, endIndex: number) => void
   language: Language
   dualTaskMode: boolean
+  todayCount: number
+  currentRound: number
 }
 
 // 添加格式化时间的函数
@@ -47,6 +49,8 @@ export function TaskList({
   onReorderTasks,
   language,
   dualTaskMode,
+  todayCount,
+  currentRound,
 }: TaskListProps) {
   const [newTaskTitle, setNewTaskTitle] = useState("")
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -155,6 +159,28 @@ export function TaskList({
 
   return (
     <Card className="h-fit bg-white dark:bg-gray-800 border-slate-200 dark:border-gray-700">
+      {/* 统计信息 */}
+      <div className="p-4 border-b border-slate-200 dark:border-gray-700">
+        <div className="flex items-center justify-between">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{todayCount}</div>
+            <div className="text-sm text-slate-600 dark:text-gray-400">
+              {language === "zh" ? "今日番茄" : "Today's Pomodoros"}
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-slate-700 dark:text-gray-300">
+              {language === "zh"
+                ? `第 ${Math.floor((currentRound - 1) / 2) + 1} 轮`
+                : `Round ${Math.floor((currentRound - 1) / 2) + 1}`}
+            </div>
+            <div className="text-sm text-slate-600 dark:text-gray-400">
+              {language === "zh" ? "当前轮次" : "Current Round"}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-slate-800 dark:text-white">
           <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
