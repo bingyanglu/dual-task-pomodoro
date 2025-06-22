@@ -66,9 +66,5 @@ export default function ZhLayout({
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <html lang="zh-CN" suppressHydrationWarning>
-      <body className={inter.className}>{children}</body>
-    </html>
-  )
+  return children
 } 

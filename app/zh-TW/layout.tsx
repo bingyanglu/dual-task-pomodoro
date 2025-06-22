@@ -66,9 +66,5 @@ export default function ZhTwLayout({
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <html lang="zh-TW" suppressHydrationWarning>
-      <body className={inter.className}>{children}</body>
-    </html>
-  )
+  return children
 } 

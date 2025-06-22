@@ -40,6 +40,11 @@ export const metadata: Metadata = {
       "zh-CN": "/zh",
       "zh-TW": "/zh-TW",
       "ja-JP": "/ja",
+      "ko-KR": "/ko",
+      "es-ES": "/es",
+      "de-DE": "/de",
+      "pt-PT": "/pt",
+      "fr-FR": "/fr",
     },
   },
   
@@ -81,12 +86,26 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 }
 
+// 动态语言检测函数
+function getLanguageFromPath(pathname: string): string {
+  if (pathname.startsWith('/zh-TW')) return 'zh-TW'
+  if (pathname.startsWith('/zh')) return 'zh-CN'
+  if (pathname.startsWith('/ja')) return 'ja'
+  if (pathname.startsWith('/ko')) return 'ko'
+  if (pathname.startsWith('/es')) return 'es'
+  if (pathname.startsWith('/de')) return 'de'
+  if (pathname.startsWith('/pt')) return 'pt'
+  if (pathname.startsWith('/fr')) return 'fr'
+  return 'en'
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // 注意：在服务器端渲染时，我们无法获取 pathname
+  // 所以这里使用默认的英文，语言特定的设置会在各自的 layout.tsx 中处理
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
