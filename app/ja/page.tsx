@@ -28,8 +28,7 @@ import { useTheme } from "../hooks/use-theme"
 import { TaskCompletionDialog } from "../components/task-completion-dialog"
 import { translations } from "@/app/i18n/translations"
 import { LandingSections } from "../components/landing-sections"
-
-export type Language = "en" | "zh" | "ja" | "zh-TW"
+import type { Language } from "@/app/types/language"
 
 export default function PomodoroAppJa() {
   const { tasks, activeTasks, addTask, toggleTask, deleteTask, editTask, addTimeToTask, reorderTasks } = useTasks()

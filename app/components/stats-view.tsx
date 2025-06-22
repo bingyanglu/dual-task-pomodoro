@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Calendar, TrendingUp, Clock, Target } from "lucide-react"
 import type { PomodoroSession } from "../hooks/use-pomodoro"
-import type { Language } from "../hooks/use-language"
-import { translations } from "../i18n/translations"
+import { translations } from "@/app/i18n/translations"
+import type { Language } from "@/app/types/language"
 
 interface StatsViewProps {
   language: Language

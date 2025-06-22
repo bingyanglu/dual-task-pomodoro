@@ -15,8 +15,6 @@ import {
   Coffee,
   CheckCircle,
   AlertCircle,
-  ChevronDown,
-  ChevronUp,
   SkipForward,
 } from "lucide-react"
 import { StatsView } from "../components/stats-view"
@@ -30,13 +28,13 @@ import { translations } from "@/app/i18n/translations"
 import { LandingSections } from "../components/landing-sections"
 import type { Language } from "@/app/types/language"
 
-export default function PomodoroAppZhTw() {
+export default function PomodoroAppEs() {
   const { tasks, activeTasks, addTask, toggleTask, deleteTask, editTask, addTimeToTask, reorderTasks } = useTasks()
   const { theme, toggleTheme } = useTheme()
-  const language: Language = "zh-TW"
+  const language: Language = "es"
 
-  // 强制设置为繁体中文
-  const t = translations["zhTW"]
+  // 强制设置为西班牙文
+  const t = translations["es"]
 
   const {
     currentTask,
@@ -176,7 +174,7 @@ export default function PomodoroAppZhTw() {
                   <Badge variant="outline" className="dark:border-gray-600 dark:text-gray-300">
                     {isBreak
                       ? `${currentRound % 4 === 0 ? t.longBreak : t.shortBreak}`
-                      : `${language === "zh-TW" ? "第 " : ""}${((currentRound - 1) % 2) + 1}${language === "zh-TW" ? " 個番茄" : " Pomodoro"}`}
+                      : `${((currentRound - 1) % 2) + 1} ${t.pomodoro}`}
                   </Badge>
                 </div>
                 <CardTitle className="text-3xl text-slate-800 dark:text-white">{currentTask}</CardTitle>
@@ -264,7 +262,8 @@ export default function PomodoroAppZhTw() {
           language={language}
         />
       </div>
-
+      
+      {/* 添加着陆页内容 */}
       <div className="max-w-7xl mx-auto p-4 mt-16">
         <LandingSections t={t} />
       </div>

@@ -11,8 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Plus, Edit2, Trash2, CheckCircle2, Circle, Clock, GripVertical } from "lucide-react"
 import type { Task } from "../types/task"
 import { translations } from "@/app/i18n/translations"
-
-export type Language = "en" | "zh" | "ja" | "zh-TW"
+import type { Language } from "@/app/types/language"
 
 interface TaskListProps {
   tasks: Task[]

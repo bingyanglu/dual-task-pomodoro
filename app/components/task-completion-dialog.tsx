@@ -1,12 +1,13 @@
 "use client"
 
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Coffee, Plus } from "lucide-react"
-import type { Language } from "../hooks/use-language"
-import { translations } from "../i18n/translations"
+import { translations } from "@/app/i18n/translations"
+import type { Language } from "@/app/types/language"
 
 interface TaskCompletionDialogProps {
   isOpen: boolean
@@ -29,7 +30,7 @@ export function TaskCompletionDialog({
 }: TaskCompletionDialogProps) {
   if (!isOpen) return null
 
-  const t = translations[language]
+  const t = translations[language.replace("-", "") as keyof typeof translations]
   const progressPercentage = ((10 - timeLeft) / 10) * 100
 
   return (

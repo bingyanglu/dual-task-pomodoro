@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next'
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dual-task-pomodoro.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const languages = ["", "/zh", "/ja", "/zh-TW"]
+  const languages = ["", "/zh", "/ja", "/zh-TW", "/ko", "/es", "/de", "/pt", "/fr"]
   
   const routes = languages.map((lang) => {
     const alternates: { [key: string]: string } = {
@@ -12,6 +12,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       'zh': `${siteUrl}/zh`,
       'ja': `${siteUrl}/ja`,
       'zh-TW': `${siteUrl}/zh-TW`,
+      'ko': `${siteUrl}/ko`,
+      'es': `${siteUrl}/es`,
+      'de': `${siteUrl}/de`,
+      'pt': `${siteUrl}/pt`,
+      'fr': `${siteUrl}/fr`,
     }
 
     return {

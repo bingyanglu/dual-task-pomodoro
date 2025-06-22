@@ -1,0 +1,1 @@
+export type Language = "en" | "zh" | "ja" | "zh-TW" | "ko" | "es" | "de" | "pt" | "fr" 

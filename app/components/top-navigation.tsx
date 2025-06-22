@@ -29,8 +29,7 @@ import { useRouter, usePathname } from "next/navigation"
 import type { PomodoroSettings } from "../hooks/use-pomodoro"
 import type { Theme } from "../hooks/use-theme"
 import { translations } from "@/app/i18n/translations"
-
-export type Language = "en" | "zh" | "ja" | "zh-TW"
+import type { Language } from "@/app/types/language"
 
 interface TopNavigationProps {
   settings: PomodoroSettings
@@ -65,6 +64,16 @@ export function TopNavigation({
       router.push("/ja")
     } else if (newLanguage === "zh-TW") {
       router.push("/zh-TW")
+    } else if (newLanguage === "ko") {
+      router.push("/ko")
+    } else if (newLanguage === "es") {
+      router.push("/es")
+    } else if (newLanguage === "de") {
+      router.push("/de")
+    } else if (newLanguage === "pt") {
+      router.push("/pt")
+    } else if (newLanguage === "fr") {
+      router.push("/fr")
     }
   }
 
@@ -78,6 +87,16 @@ export function TopNavigation({
         return "繁體中文"
       case "ja":
         return "日本語"
+      case "ko":
+        return "한국어"
+      case "es":
+        return "Español"
+      case "de":
+        return "Deutsch"
+      case "pt":
+        return "Português"
+      case "fr":
+        return "Français"
       default:
         return "English"
     }
@@ -93,6 +112,16 @@ export function TopNavigation({
         return "🇨🇳"
       case "ja":
         return "🇯🇵"
+      case "ko":
+        return "🇰🇷"
+      case "es":
+        return "🇪🇸"
+      case "de":
+        return "🇩🇪"
+      case "pt":
+        return "🇵🇹"
+      case "fr":
+        return "🇫🇷"
       default:
         return "🇺🇸"
     }
@@ -111,11 +140,29 @@ export function TopNavigation({
               <div className="hidden sm:block">
                 <div className="font-semibold text-slate-800 dark:text-white text-lg">
                   <span className="hidden sm:inline">{t.appTitle}</span>
-                  <span className="sm:hidden">{language === "zh" ? "双任务番茄" : language === "ja" ? "デュアルタスクポモドーロ" : "Dual Pomodoro"}</span>
+                  <span className="sm:hidden">
+                    {language === "zh" ? "双任务番茄" : 
+                     language === "ja" ? "デュアルタスクポモドーロ" : 
+                     language === "ko" ? "듀얼 태스크 뽀모도로" :
+                     language === "es" ? "Pomodoro Dual-Task" :
+                     language === "de" ? "Dual-Task Pomodoro" :
+                     language === "pt" ? "Pomodoro Dual-Task" :
+                     language === "fr" ? "Pomodoro Dual-Task" :
+                     "Dual Pomodoro"}
+                  </span>
                 </div>
                 <div className="text-xs text-slate-600 dark:text-gray-400">
                   <span className="hidden sm:inline">{t.appSubtitle}</span>
-                  <span className="sm:hidden">{language === "zh" ? "ADHD 友好" : language === "ja" ? "ADHDに優しい作業法" : "ADHD Friendly"}</span>
+                  <span className="sm:hidden">
+                    {language === "zh" ? "ADHD 友好" : 
+                     language === "ja" ? "ADHDに優しい作業法" : 
+                     language === "ko" ? "ADHD 친화적" :
+                     language === "es" ? "ADHD-Friendly" :
+                     language === "de" ? "ADHD-freundlich" :
+                     language === "pt" ? "ADHD-Friendly" :
+                     language === "fr" ? "ADHD-Friendly" :
+                     "ADHD Friendly"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -152,6 +199,31 @@ export function TopNavigation({
                   <span className="text-lg">🇯🇵</span>
                   <span>日本語</span>
                   {currentLanguage === "ja" && <Check className="w-4 h-4 ml-auto" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange("ko")} className="gap-2">
+                  <span className="text-lg">🇰🇷</span>
+                  <span>한국어</span>
+                  {currentLanguage === "ko" && <Check className="w-4 h-4 ml-auto" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange("es")} className="gap-2">
+                  <span className="text-lg">🇪🇸</span>
+                  <span>Español</span>
+                  {currentLanguage === "es" && <Check className="w-4 h-4 ml-auto" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange("de")} className="gap-2">
+                  <span className="text-lg">🇩🇪</span>
+                  <span>Deutsch</span>
+                  {currentLanguage === "de" && <Check className="w-4 h-4 ml-auto" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange("pt")} className="gap-2">
+                  <span className="text-lg">🇵🇹</span>
+                  <span>Português</span>
+                  {currentLanguage === "pt" && <Check className="w-4 h-4 ml-auto" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange("fr")} className="gap-2">
+                  <span className="text-lg">🇫🇷</span>
+                  <span>Français</span>
+                  {currentLanguage === "fr" && <Check className="w-4 h-4 ml-auto" />}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
