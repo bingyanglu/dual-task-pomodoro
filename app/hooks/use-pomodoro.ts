@@ -11,6 +11,7 @@ export interface PomodoroSettings {
   vibrationEnabled: boolean
   switchAfterPomodoros: number
   dualTaskMode: boolean // 新增：双任务模式开关
+  notificationEnabled: boolean // 新增：浏览器通知开关
 }
 
 export interface PomodoroSession {
@@ -30,6 +31,68 @@ const defaultSettings: PomodoroSettings = {
   vibrationEnabled: true,
   switchAfterPomodoros: 2,
   dualTaskMode: true, // 默认开启双任务模式
+  notificationEnabled: true, // 默认开启浏览器通知
+}
+
+// 浏览器通知工具函数
+const requestNotificationPermission = async (): Promise<boolean> => {
+  console.log("开始请求通知权限")
+  
+  if (!("Notification" in window)) {
+    console.log("This browser does not support notifications")
+    return false
+  }
+
+  console.log("当前通知权限状态:", Notification.permission)
+
+  if (Notification.permission === "granted") {
+    console.log("通知权限已授权")
+    return true
+  }
+
+  if (Notification.permission === "denied") {
+    console.log("Notification permission denied")
+    return false
+  }
+
+  try {
+    console.log("请求通知权限...")
+    const permission = await Notification.requestPermission()
+    console.log("权限请求结果:", permission)
+    return permission === "granted"
+  } catch (error) {
+    console.error("Error requesting notification permission:", error)
+    return false
+  }
+}
+
+const sendNotification = (title: string, options?: NotificationOptions) => {
+  console.log("sendNotification 被调用:", title, options)
+  
+  if (!("Notification" in window)) {
+    console.log("This browser does not support notifications")
+    return
+  }
+
+  if (Notification.permission !== "granted") {
+    console.log("Notification permission not granted:", Notification.permission)
+    return
+  }
+
+  try {
+    console.log("准备发送通知:", title, options)
+    const notification = new Notification(title, {
+      icon: "/favicon.ico",
+      badge: "/favicon.ico",
+      tag: "pomodoro-notification",
+      requireInteraction: false,
+      silent: false,
+      ...options,
+    })
+    console.log("通知已发送:", notification)
+  } catch (error) {
+    console.error("Error sending notification:", error)
+  }
 }
 
 // 在usePomodoro函数参数中添加addTimeToTask
@@ -108,10 +171,16 @@ export function usePomodoro(activeTasks: Task[], addTimeToTask: (taskTitle: stri
       console.error("Error loading data from localStorage:", error)
       // 如果加载失败，使用默认值
     }
-
-    // Create audio element for notifications
-    audioRef.current = new Audio("/notification.mp3")
   }, [])
+
+  // 请求通知权限的独立 useEffect
+  useEffect(() => {
+    console.log("权限请求 useEffect 触发，notificationEnabled:", settings.notificationEnabled)
+    if (settings.notificationEnabled) {
+      console.log("开始请求通知权限...")
+      requestNotificationPermission()
+    }
+  }, [settings.notificationEnabled])
 
   // Page Visibility API - 监听页面可见性变化
   useEffect(() => {
@@ -213,21 +282,86 @@ export function usePomodoro(activeTasks: Task[], addTimeToTask: (taskTitle: stri
   }, [timeLeft, isRunning])
 
   const playNotification = useCallback(() => {
-    if (settings.soundEnabled && audioRef.current) {
-      audioRef.current.play().catch(() => {
-        // Fallback to system beep if audio file not available
-        if (typeof window !== "undefined" && window.speechSynthesis) {
-          const utterance = new SpeechSynthesisUtterance("时间到")
-          utterance.volume = 0.1
-          window.speechSynthesis.speak(utterance)
+    console.log("playNotification 被调用")
+    console.log("设置状态:", {
+      soundEnabled: settings.soundEnabled,
+      vibrationEnabled: settings.vibrationEnabled,
+      notificationEnabled: settings.notificationEnabled
+    })
+    
+    if (settings.soundEnabled) {
+      console.log("播放声音提示")
+      // 使用系统提示音或语音合成
+      if (typeof window !== "undefined" && window.speechSynthesis) {
+        console.log("使用语音合成播放声音")
+        const utterance = new SpeechSynthesisUtterance("时间到")
+        utterance.volume = 0.1
+        utterance.rate = 1.2
+        window.speechSynthesis.speak(utterance)
+      } else {
+        console.log("使用 Web Audio API 播放声音")
+        // 降级方案：使用系统提示音
+        try {
+          const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+          const oscillator = audioContext.createOscillator()
+          const gainNode = audioContext.createGain()
+          
+          oscillator.connect(gainNode)
+          gainNode.connect(audioContext.destination)
+          
+          oscillator.frequency.setValueAtTime(800, audioContext.currentTime)
+          oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1)
+          oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.2)
+          
+          gainNode.gain.setValueAtTime(0.1, audioContext.currentTime)
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3)
+          
+          oscillator.start(audioContext.currentTime)
+          oscillator.stop(audioContext.currentTime + 0.3)
+        } catch (error) {
+          console.log("Audio notification not supported:", error)
         }
-      })
+      }
     }
 
     if (settings.vibrationEnabled && "vibrate" in navigator) {
+      console.log("触发震动")
       navigator.vibrate([200, 100, 200])
     }
-  }, [settings.soundEnabled, settings.vibrationEnabled])
+
+    // 发送浏览器通知
+    if (settings.notificationEnabled) {
+      console.log("准备发送浏览器通知")
+      const { taskAName, taskBName } = getCurrentTaskInfo()
+      let currentTaskTitle: string
+
+      if (!settings.dualTaskMode) {
+        currentTaskTitle = taskAName
+      } else {
+        currentTaskTitle = currentTaskType === "A" ? taskAName : taskBName
+      }
+
+      console.log("当前任务信息:", { currentTaskTitle, isBreak, currentTaskType })
+
+      if (isBreak) {
+        // 休息完成通知
+        console.log("发送休息完成通知")
+        sendNotification("休息时间结束！", {
+          body: "准备开始下一个番茄钟吧！",
+          tag: "break-complete",
+        })
+      } else {
+        // 番茄钟完成通知
+        console.log("发送番茄钟完成通知")
+        sendNotification("番茄钟完成！", {
+          body: `"${currentTaskTitle}" 已完成，该休息一下了！`,
+          tag: "pomodoro-complete",
+        })
+      }
+    } else {
+      console.log("浏览器通知已禁用")
+    }
+  }, [settings.soundEnabled, settings.vibrationEnabled, settings.notificationEnabled, isBreak, currentTaskType, getCurrentTaskInfo])
 
   // 在proceedToNextPhase函数中，当完成工作番茄钟时添加时间记录
   const proceedToNextPhase = useCallback(() => {

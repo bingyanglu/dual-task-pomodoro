@@ -331,6 +331,25 @@ export function TopNavigation({
                 />
               </div>
             </div>
+
+            {/* Notification Settings */}
+            <div className="mt-4 pt-4 border-t border-slate-200 dark:border-gray-600">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <div className="font-medium text-slate-800 dark:text-white">{t.browserNotifications}</div>
+                  <div className="text-sm text-slate-600 dark:text-gray-400">{t.browserNotificationsDescription}</div>
+                </div>
+                <Switch
+                  checked={settings.notificationEnabled}
+                  onCheckedChange={(checked) =>
+                    onSettingsChange({
+                      ...settings,
+                      notificationEnabled: checked,
+                    })
+                  }
+                />
+              </div>
+            </div>
           </div>
         )}
       </div>

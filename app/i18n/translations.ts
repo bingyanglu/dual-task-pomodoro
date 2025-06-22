@@ -56,6 +56,9 @@ export const translations = {
     switchAfterPomodoros: "Switch tasks after how many pomodoros",
     dualTaskMode: "Dual-Task Mode",
     dualTaskModeDescription: "Enable alternating between two tasks",
+    browserNotifications: "Browser Notifications",
+    browserNotificationsDescription: "Show desktop notifications when timer completes",
+    testNotification: "Test Notification",
     saveSettings: "Save Settings",
     resetToDefaults: "Reset to Defaults",
 
@@ -232,6 +235,9 @@ export const translations = {
     switchAfterPomodoros: "每几个番茄后切换任务",
     dualTaskMode: "双任务模式",
     dualTaskModeDescription: "启用两个任务之间的交替",
+    browserNotifications: "浏览器通知",
+    browserNotificationsDescription: "当计时器完成时显示桌面通知",
+    testNotification: "测试通知",
     saveSettings: "保存设置",
     resetToDefaults: "重置",
 
@@ -402,6 +408,9 @@ export const translations = {
     switchAfterPomodoros: "每幾個番茄後切換任務",
     dualTaskMode: "雙任務模式",
     dualTaskModeDescription: "啟用兩個任務之間的交替",
+    browserNotifications: "瀏覽器通知",
+    browserNotificationsDescription: "當計時器完成時顯示桌面通知",
+    testNotification: "測試通知",
     saveSettings: "儲存設定",
     resetToDefaults: "重設",
 
@@ -572,6 +581,9 @@ export const translations = {
     switchAfterPomodoros: "何ポモドーロ後にタスクを切り替えるか",
     dualTaskMode: "デュアルタスクモード",
     dualTaskModeDescription: "2つのタスク間の交互を有効にする",
+    browserNotifications: "ブラウザ通知",
+    browserNotificationsDescription: "タイマーが完了したときにデスクトップ通知を表示",
+    testNotification: "テスト通知",
     saveSettings: "設定を保存",
     resetToDefaults: "デフォルトにリセット",
 
@@ -742,6 +754,9 @@ export const translations = {
     switchAfterPomodoros: "몇 개의 뽀모도로 후에 작업을 전환할지",
     dualTaskMode: "듀얼 태스크 모드",
     dualTaskModeDescription: "두 작업 간의 교대 활성화",
+    browserNotifications: "브라우저 알림",
+    browserNotificationsDescription: "타이머가 완료되었을 때 데스크탑 알림을 표시",
+    testNotification: "테스트 알림",
     saveSettings: "설정 저장",
     resetToDefaults: "기본값으로 재설정",
 
@@ -912,6 +927,9 @@ export const translations = {
     switchAfterPomodoros: "¿Qué pomodoro después de cuántos pomodoros se cambiará la tarea?",
     dualTaskMode: "Modo dual-tarea",
     dualTaskModeDescription: "Habilitar alternancia entre dos tipos de tarea",
+    browserNotifications: "Notificaciones del navegador",
+    browserNotificationsDescription: "Mostrar notificaciones de escritorio cuando el temporizador se complete",
+    testNotification: "Notificación de prueba",
     saveSettings: "Guardar configuración",
     resetToDefaults: "Restablecer a valores predeterminados",
 
@@ -1080,6 +1098,9 @@ export const translations = {
     switchAfterPomodoros: "Nach wie vielen Pomodoros Aufgaben wechseln",
     dualTaskMode: "Dual-Task-Modus",
     dualTaskModeDescription: "Wechsel zwischen zwei Aufgaben aktivieren",
+    browserNotifications: "Browser-Benachrichtigungen",
+    browserNotificationsDescription: "Desktop-Benachrichtigungen anzeigen, wenn der Timer abgeschlossen ist",
+    testNotification: "Testbenachrichtigung",
     saveSettings: "Einstellungen speichern",
     resetToDefaults: "Auf Standard zurücksetzen",
 
@@ -1250,6 +1271,9 @@ export const translations = {
     switchAfterPomodoros: "Trocar tarefas depois de quantos pomodoros",
     dualTaskMode: "Modo dual-tarefa",
     dualTaskModeDescription: "Habilitar alternância entre dois tipos de tarefa",
+    browserNotifications: "Notificações do navegador",
+    browserNotificationsDescription: "Mostrar notificações de desktop quando o temporizador se completar",
+    testNotification: "Notificação de teste",
     saveSettings: "Salvar configurações",
     resetToDefaults: "Reiniciar a valores padrão",
 
@@ -1418,6 +1442,9 @@ export const translations = {
     switchAfterPomodoros: "Changer de tâche après combien de pomodoros",
     dualTaskMode: "Mode dual-tâche",
     dualTaskModeDescription: "Activer l'alternance entre deux types de tâches",
+    browserNotifications: "Notifications du navigateur",
+    browserNotificationsDescription: "Afficher des notifications de bureau lorsque le minuteur est terminé",
+    testNotification: "Notification de test",
     saveSettings: "Sauvegarder les paramètres",
     resetToDefaults: "Réinitialiser aux valeurs par défaut",
 
@@ -1501,7 +1528,7 @@ export const translations = {
     whyItHelpsChallenge1: "Difficile de commencer une tâche",
     whyItHelpsChallenge2: "Se sent rapidement fatigué ou ennuyé après avoir commencé",
     whyItHelpsChallenge3: "Se sent pressé par les tâches toute la journée, mais ne sait pas par où commencer",
-    whyItHelpsSolution: "Le système que nous avons construit est conçu pour résoudre ces trois problèmes.",
+    whyItHelpsSolution: "Le système, que nous avons construit, est conçu pour résoudre ces trois problèmes.",
     featuresTitle: "Qu'est-ce qui le rend différent ?",
     featuresSubtitle: "Aperçu des fonctionnalités",
     featuresDualTaskTitle: "Mode dual-tâche",
