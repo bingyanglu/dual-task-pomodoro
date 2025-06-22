@@ -220,9 +220,6 @@ export function LandingSections({ t }: LandingSectionsProps) {
           <h2 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white inline-block pb-2 border-b-2 border-blue-500">
             {t.whoIsItForTitle}
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 mt-2 max-w-2xl mx-auto">
-            我们的工具专为以下人群设计，帮助他们更好地管理时间和注意力
-          </p>
         </div>
 
         <Card className="border-slate-200 dark:border-gray-700 overflow-hidden">

@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { LanguageProvider } from "./components/language-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -39,6 +38,7 @@ export const metadata: Metadata = {
     languages: {
       "en": "/",
       "zh-CN": "/zh",
+      "zh-TW": "/zh-TW",
       "ja-JP": "/ja",
     },
   },
@@ -94,7 +94,7 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
         >
-          <LanguageProvider>{children}</LanguageProvider>
+          {children}
         </ThemeProvider>
       </body>
     </html>

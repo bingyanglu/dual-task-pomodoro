@@ -25,15 +25,16 @@ import { TopNavigation } from "../components/top-navigation"
 import { usePomodoro } from "../hooks/use-pomodoro"
 import { useTasks } from "../hooks/use-tasks"
 import { useTheme } from "../hooks/use-theme"
-import { useLanguage } from "../hooks/use-language"
 import { TaskCompletionDialog } from "../components/task-completion-dialog"
-import { translations } from "../i18n/translations"
+import { translations } from "@/app/i18n/translations"
 import { LandingSections } from "../components/landing-sections"
+
+export type Language = "en" | "zh" | "ja" | "zh-TW"
 
 export default function PomodoroAppZh() {
   const { tasks, activeTasks, addTask, toggleTask, deleteTask, editTask, addTimeToTask, reorderTasks } = useTasks()
   const { theme, toggleTheme } = useTheme()
-  const { language, toggleLanguage } = useLanguage()
+  const language: Language = "zh"
 
   // 强制设置为中文
   const t = translations["zh"]
@@ -89,10 +90,9 @@ export default function PomodoroAppZh() {
           theme={theme}
           onToggleTheme={toggleTheme}
           language={language}
-          onToggleLanguage={toggleLanguage}
         />
         <div className="max-w-6xl mx-auto p-4">
-          <StatsView language="zh" />
+          <StatsView language={language} />
         </div>
       </div>
     )
@@ -108,7 +108,6 @@ export default function PomodoroAppZh() {
         theme={theme}
         onToggleTheme={toggleTheme}
         language={language}
-        onToggleLanguage={toggleLanguage}
       />
 
       <div className="max-w-7xl mx-auto p-4">
@@ -247,7 +246,7 @@ export default function PomodoroAppZh() {
               onDeleteTask={deleteTask}
               onEditTask={editTask}
               onReorderTasks={reorderTasks}
-              language="zh"
+              language={language}
               dualTaskMode={settings.dualTaskMode}
               todayCount={todayCount}
               currentRound={currentRound}
@@ -263,7 +262,7 @@ export default function PomodoroAppZh() {
           timeLeft={confirmationTimeLeft}
           onExtend={extendCurrentTask}
           onBreak={confirmBreak}
-          language="zh"
+          language={language}
         />
       </div>
 

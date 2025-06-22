@@ -28,6 +28,7 @@ export const metadata: Metadata = {
     languages: {
       "en": "/",
       "zh-CN": "/zh",
+      "zh-TW": "/zh-TW",
       "ja-JP": "/ja",
     },
   },
@@ -65,5 +66,9 @@ export default function ZhLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <>{children}</>
+  return (
+    <html lang="zh-CN" suppressHydrationWarning>
+      <body className={inter.className}>{children}</body>
+    </html>
+  )
 } 

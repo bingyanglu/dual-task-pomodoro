@@ -10,8 +10,9 @@ import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Plus, Edit2, Trash2, CheckCircle2, Circle, Clock, GripVertical } from "lucide-react"
 import type { Task } from "../types/task"
-import type { Language } from "../hooks/use-language"
-import { translations } from "../i18n/translations"
+import { translations } from "@/app/i18n/translations"
+
+export type Language = "en" | "zh" | "ja" | "zh-TW"
 
 interface TaskListProps {
   tasks: Task[]
@@ -30,7 +31,7 @@ interface TaskListProps {
 // 添加格式化时间的函数
 const formatTime = (minutes: number, language: Language) => {
   if (minutes === 0) return ""
-  const t = translations[language]
+  const t = translations[language.replace("-", "") as keyof typeof translations]
   const hours = Math.floor(minutes / 60)
   const mins = minutes % 60
   if (hours > 0) {
@@ -58,7 +59,7 @@ export function TaskList({
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
 
-  const t = translations[language]
+  const t = translations[language.replace("-", "") as keyof typeof translations]
 
   const handleAddTask = () => {
     if (newTaskTitle.trim()) {
@@ -165,19 +166,15 @@ export function TaskList({
           <div className="text-center">
             <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{todayCount}</div>
             <div className="text-sm text-slate-600 dark:text-gray-400">
-              {language === "zh" ? "今日番茄" : language === "ja" ? "今日のポモドーロ" : "Today's Pomodoros"}
+              {t.todayPomodoros}
             </div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-slate-700 dark:text-gray-300">
-              {language === "zh"
-                ? `第 ${Math.floor((currentRound - 1) / 2) + 1} 轮`
-                : language === "ja"
-                ? `ラウンド ${Math.floor((currentRound - 1) / 2) + 1}`
-                : `Round ${Math.floor((currentRound - 1) / 2) + 1}`}
+              {t.round.replace("{round}", `${Math.floor((currentRound - 1) / 2) + 1}`)}
             </div>
             <div className="text-sm text-slate-600 dark:text-gray-400">
-              {language === "zh" ? "当前轮次" : language === "ja" ? "現在のラウンド" : "Current Round"}
+              {t.currentRound}
             </div>
           </div>
         </div>
@@ -193,17 +190,17 @@ export function TaskList({
           {dualTaskMode && activeTasks.length >= 2 && (
             <div className="flex gap-2 mt-2">
               <Badge className="bg-blue-500 text-white">
-                {language === "zh" ? "任务A" : language === "ja" ? "タスクA" : "Task A"}: {activeTasks[0]?.title}
+                {t.taskA}: {activeTasks[0]?.title}
               </Badge>
               <Badge className="bg-purple-500 text-white">
-                {language === "zh" ? "任务B" : language === "ja" ? "タスクB" : "Task B"}: {activeTasks[1]?.title}
+                {t.taskB}: {activeTasks[1]?.title}
               </Badge>
             </div>
           )}
           {!dualTaskMode && activeTasks.length >= 1 && (
             <div className="flex gap-2 mt-2">
               <Badge className="bg-blue-500 text-white">
-                {language === "zh" ? "当前任务" : language === "ja" ? "現在のタスク" : "Current Task"}: {activeTasks[0]?.title}
+                {t.currentTask}: {activeTasks[0]?.title}
               </Badge>
             </div>
           )}

@@ -25,23 +25,24 @@ import { TopNavigation } from "./components/top-navigation"
 import { usePomodoro } from "./hooks/use-pomodoro"
 import { useTasks } from "./hooks/use-tasks"
 import { useTheme } from "./hooks/use-theme"
-import { useLanguage } from "./hooks/use-language"
 import { TaskCompletionDialog } from "./components/task-completion-dialog"
-import { translations } from "./i18n/translations"
+import { translations } from "@/app/i18n/translations"
 import { LandingSections } from "./components/landing-sections"
+
+export type Language = "en" | "zh" | "ja" | "zh-TW"
 
 export default function PomodoroApp() {
   const { tasks, activeTasks, addTask, toggleTask, deleteTask, editTask, addTimeToTask, reorderTasks } = useTasks()
   const { theme, toggleTheme } = useTheme()
-  const { language, toggleLanguage } = useLanguage()
+  const language: Language = "en"
 
   // 强制设置为英文（根路径默认英文）
   const t = translations["en"]
 
-  // 如果当前语言不是英文，重定向到英文版本
-  if (language !== "en") {
-    // 这里可以添加重定向逻辑，但为了简化，我们直接强制使用英文
-  }
+  // 语言是常量，不再需要重定向逻辑
+  // if (language !== "en") {
+  //   // 这里可以添加重定向逻辑，但为了简化，我们直接强制使用英文
+  // }
 
   const {
     currentTask,
@@ -94,7 +95,6 @@ export default function PomodoroApp() {
           theme={theme}
           onToggleTheme={toggleTheme}
           language={language}
-          onToggleLanguage={toggleLanguage}
         />
         <div className="max-w-6xl mx-auto p-4">
           <StatsView language="en" />
@@ -113,7 +113,6 @@ export default function PomodoroApp() {
         theme={theme}
         onToggleTheme={toggleTheme}
         language={language}
-        onToggleLanguage={toggleLanguage}
       />
 
       <div className="max-w-7xl mx-auto p-4">
@@ -183,7 +182,7 @@ export default function PomodoroApp() {
                   <Badge variant="outline" className="dark:border-gray-600 dark:text-gray-300">
                     {isBreak
                       ? `${currentRound % 4 === 0 ? t.longBreak : t.shortBreak}`
-                      : `${language === "zh" ? "第 " : ""}${((currentRound - 1) % 2) + 1}${language === "zh" ? " 个番茄" : " Pomodoro"}`}
+                      : `${((currentRound - 1) % 2) + 1} Pomodoro`}
                   </Badge>
                 </div>
                 <CardTitle className="text-3xl text-slate-800 dark:text-white">{currentTask}</CardTitle>
@@ -252,7 +251,7 @@ export default function PomodoroApp() {
               onDeleteTask={deleteTask}
               onEditTask={editTask}
               onReorderTasks={reorderTasks}
-              language="en"
+              language={language}
               dualTaskMode={settings.dualTaskMode}
               todayCount={todayCount}
               currentRound={currentRound}
@@ -268,7 +267,7 @@ export default function PomodoroApp() {
           timeLeft={confirmationTimeLeft}
           onExtend={extendCurrentTask}
           onBreak={confirmBreak}
-          language="en"
+          language={language}
         />
       </div>
       

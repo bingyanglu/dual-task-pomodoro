@@ -14,7 +14,7 @@ interface StatsViewProps {
 
 export function StatsView({ language }: StatsViewProps) {
   const [sessions, setSessions] = useState<PomodoroSession[]>([])
-  const t = translations[language]
+  const t = translations[language.replace("-", "") as keyof typeof translations]
 
   useEffect(() => {
     const savedSessions = localStorage.getItem("pomodoro-sessions")

@@ -1,48 +1,29 @@
 import { MetadataRoute } from 'next'
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  // 注意：请将这里的URL替换为您的实际域名
-  const baseUrl = 'https://dual-task-pomodoro.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dual-task-pomodoro.com';
 
-  return [
-    {
-      url: `${baseUrl}/`,
+export default function sitemap(): MetadataRoute.Sitemap {
+  const languages = ["", "/zh", "/ja", "/zh-TW"]
+  
+  const routes = languages.map((lang) => {
+    const alternates: { [key: string]: string } = {
+      'x-default': `${siteUrl}/`,
+      'en': `${siteUrl}/`,
+      'zh': `${siteUrl}/zh`,
+      'ja': `${siteUrl}/ja`,
+      'zh-TW': `${siteUrl}/zh-TW`,
+    }
+
+    return {
+      url: `${siteUrl}${lang}`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 1,
+      changeFrequency: 'monthly' as const,
+      priority: lang === "" ? 1 : 0.8,
       alternates: {
-        languages: {
-          en: `${baseUrl}/`,
-          zh: `${baseUrl}/zh`,
-          ja: `${baseUrl}/ja`,
-        },
+        languages: alternates,
       },
-    },
-    {
-      url: `${baseUrl}/zh`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-      alternates: {
-        languages: {
-          en: `${baseUrl}/`,
-          zh: `${baseUrl}/zh`,
-          ja: `${baseUrl}/ja`,
-        },
-      },
-    },
-    {
-      url: `${baseUrl}/ja`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-      alternates: {
-        languages: {
-          en: `${baseUrl}/`,
-          zh: `${baseUrl}/zh`,
-          ja: `${baseUrl}/ja`,
-        },
-      },
-    },
-  ]
+    }
+  });
+
+  return routes;
 } 

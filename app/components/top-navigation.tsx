@@ -25,11 +25,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useRouter } from "next/navigation"
-import { Language } from "../hooks/use-language"
+import { useRouter, usePathname } from "next/navigation"
 import type { PomodoroSettings } from "../hooks/use-pomodoro"
 import type { Theme } from "../hooks/use-theme"
-import { translations } from "../i18n/translations"
+import { translations } from "@/app/i18n/translations"
+
+export type Language = "en" | "zh" | "ja" | "zh-TW"
 
 interface TopNavigationProps {
   settings: PomodoroSettings
@@ -38,7 +39,6 @@ interface TopNavigationProps {
   theme: Theme
   onToggleTheme: () => void
   language: Language
-  onToggleLanguage: () => void
 }
 
 export function TopNavigation({
@@ -48,12 +48,13 @@ export function TopNavigation({
   theme,
   onToggleTheme,
   language,
-  onToggleLanguage,
 }: TopNavigationProps) {
   const [showSettings, setShowSettings] = useState(false)
   const router = useRouter()
+  const pathname = usePathname()
+  const currentLanguage = language
 
-  const t = translations[language]
+  const t = translations[currentLanguage.replace("-", "") as keyof typeof translations]
 
   const handleLanguageChange = (newLanguage: Language) => {
     if (newLanguage === "en") {
@@ -62,6 +63,8 @@ export function TopNavigation({
       router.push("/zh")
     } else if (newLanguage === "ja") {
       router.push("/ja")
+    } else if (newLanguage === "zh-TW") {
+      router.push("/zh-TW")
     }
   }
 
@@ -70,7 +73,9 @@ export function TopNavigation({
       case "en":
         return "English"
       case "zh":
-        return "中文"
+        return "简体中文"
+      case "zh-TW":
+        return "繁體中文"
       case "ja":
         return "日本語"
       default:
@@ -83,6 +88,8 @@ export function TopNavigation({
       case "en":
         return "🇺🇸"
       case "zh":
+        return "🇨🇳"
+      case "zh-TW":
         return "🇨🇳"
       case "ja":
         return "🇯🇵"
@@ -120,8 +127,8 @@ export function TopNavigation({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="gap-2">
-                  <span className="text-lg">{getLanguageFlag(language)}</span>
-                  <span className="hidden sm:inline">{getLanguageLabel(language)}</span>
+                  <span className="text-lg">{getLanguageFlag(currentLanguage)}</span>
+                  <span className="hidden sm:inline">{getLanguageLabel(currentLanguage)}</span>
                   <ChevronDown className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -129,17 +136,22 @@ export function TopNavigation({
                 <DropdownMenuItem onClick={() => handleLanguageChange("en")} className="gap-2">
                   <span className="text-lg">🇺🇸</span>
                   <span>English</span>
-                  {language === "en" && <Check className="w-4 h-4 ml-auto" />}
+                  {currentLanguage === "en" && <Check className="w-4 h-4 ml-auto" />}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleLanguageChange("zh")} className="gap-2">
                   <span className="text-lg">🇨🇳</span>
-                  <span>中文</span>
-                  {language === "zh" && <Check className="w-4 h-4 ml-auto" />}
+                  <span>简体中文</span>
+                  {currentLanguage === "zh" && <Check className="w-4 h-4 ml-auto" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange("zh-TW")} className="gap-2">
+                  <span className="text-lg">🇨🇳</span>
+                  <span>繁體中文</span>
+                  {currentLanguage === "zh-TW" && <Check className="w-4 h-4 ml-auto" />}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleLanguageChange("ja")} className="gap-2">
                   <span className="text-lg">🇯🇵</span>
                   <span>日本語</span>
-                  {language === "ja" && <Check className="w-4 h-4 ml-auto" />}
+                  {currentLanguage === "ja" && <Check className="w-4 h-4 ml-auto" />}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -153,9 +165,7 @@ export function TopNavigation({
             <Button onClick={onShowStats} variant="outline" size="sm" title="View Statistics">
               <BarChart3 className="w-4 h-4 sm:mr-1" />
               <span className="hidden sm:inline">
-                {language === "en" && "Statistics"}
-                {language === "zh" && "统计"}
-                {language === "ja" && "統計"}
+                {t.statistics}
               </span>
             </Button>
 
@@ -163,9 +173,7 @@ export function TopNavigation({
             <Button onClick={() => setShowSettings(!showSettings)} variant="outline" size="sm" title="Settings">
               <Settings className="w-4 h-4 sm:mr-1" />
               <span className="hidden sm:inline">
-                {language === "en" && "Settings"}
-                {language === "zh" && "设置"}
-                {language === "ja" && "設定"}
+                {t.settings}
               </span>
             </Button>
           </div>
@@ -177,9 +185,7 @@ export function TopNavigation({
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="pomoDuration">
-                  {language === "en" && "Pomodoro Duration (minutes)"}
-                  {language === "zh" && "番茄时长 (分钟)"}
-                  {language === "ja" && "ポモドーロ時間（分）"}
+                  {t.pomodoroDuration}
                 </Label>
                 <Input
                   id="pomoDuration"
@@ -198,9 +204,7 @@ export function TopNavigation({
 
               <div className="space-y-2">
                 <Label htmlFor="shortBreakDuration">
-                  {language === "en" && "Short Break (minutes)"}
-                  {language === "zh" && "短休息 (分钟)"}
-                  {language === "ja" && "短い休憩（分）"}
+                  {t.shortBreakDuration}
                 </Label>
                 <Input
                   id="shortBreakDuration"
@@ -219,9 +223,7 @@ export function TopNavigation({
 
               <div className="space-y-2">
                 <Label htmlFor="longBreakDuration">
-                  {language === "en" && "Long Break (minutes)"}
-                  {language === "zh" && "长休息 (分钟)"}
-                  {language === "ja" && "長い休憩（分）"}
+                  {t.longBreakDuration}
                 </Label>
                 <Input
                   id="longBreakDuration"
@@ -240,9 +242,7 @@ export function TopNavigation({
 
               <div className="space-y-2">
                 <Label htmlFor="switchAfterPomodoros">
-                  {language === "en" && "Switch after pomodoros"}
-                  {language === "zh" && "每几个番茄后切换任务"}
-                  {language === "ja" && "何個のポモドーロ後にタスクを切り替える"}
+                  {t.switchAfterPomodoros}
                 </Label>
                 <Input
                   id="switchAfterPomodoros"

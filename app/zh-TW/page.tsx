@@ -31,13 +31,13 @@ import { LandingSections } from "../components/landing-sections"
 
 export type Language = "en" | "zh" | "ja" | "zh-TW"
 
-export default function PomodoroAppJa() {
+export default function PomodoroAppZhTw() {
   const { tasks, activeTasks, addTask, toggleTask, deleteTask, editTask, addTimeToTask, reorderTasks } = useTasks()
   const { theme, toggleTheme } = useTheme()
-  const language: Language = "ja"
+  const language: Language = "zh-TW"
 
-  // 强制设置为日文
-  const t = translations["ja"]
+  // 强制设置为繁体中文
+  const t = translations["zhTW"]
 
   const {
     currentTask,
@@ -61,7 +61,6 @@ export default function PomodoroAppJa() {
   } = usePomodoro(activeTasks, addTimeToTask)
 
   const [showStats, setShowStats] = useState(false)
-  const [explanationExpanded, setExplanationExpanded] = useState(false)
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -178,7 +177,7 @@ export default function PomodoroAppJa() {
                   <Badge variant="outline" className="dark:border-gray-600 dark:text-gray-300">
                     {isBreak
                       ? `${currentRound % 4 === 0 ? t.longBreak : t.shortBreak}`
-                      : `${language === "ja" ? "第 " : ""}${((currentRound - 1) % 2) + 1}${language === "ja" ? " ポモドーロ" : " Pomodoro"}`}
+                      : `${language === "zh-TW" ? "第 " : ""}${((currentRound - 1) % 2) + 1}${language === "zh-TW" ? " 個番茄" : " Pomodoro"}`}
                   </Badge>
                 </div>
                 <CardTitle className="text-3xl text-slate-800 dark:text-white">{currentTask}</CardTitle>

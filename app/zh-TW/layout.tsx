@@ -5,26 +5,26 @@ import "../globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
 
-// SEO Metadata for Japanese page
+// SEO Metadata for Traditional Chinese page
 const siteConfig = {
-  name: "デュアルタスクポモドーロ - ADHDフレンドリーな作業方法",
+  name: "雙任務番茄鐘 - ADHD 友善工作法",
   description:
-    "2つのタスクを切り替える集中力ツール — 注意力を高め、燃え尽き症候群を減らし、緩やかな構造を構築します。ADHD、学生、リモートワーカーに最適です。",
-  url: "https://dual-task-pomodoro.com/ja",
-  ogImage: "https://dual-task-pomodoro.com/og-image-ja.png", // 日本語ページ用に別のOG画像を作成することをお勧めします
+    "一款在兩個任務間輪換的專注工具——為更好的注意力、更少的倦怠和溫和的結構而設計。專為ADHD、學生和遠程工作者打造。",
+  url: "https://dual-task-pomodoro.com/zh-TW",
+  ogImage: "https://dual-task-pomodoro.com/og-image-zh.png", // 建议为繁体中文页面创建单独的OG图
 }
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://dual-task-pomodoro.com"),
   title: {
     default: siteConfig.name,
-    template: `%s | デュアルタスクポモドーロ`,
+    template: `%s | 雙任務番茄鐘`,
   },
   description: siteConfig.description,
   
   // hreflang for internationalization
   alternates: {
-    canonical: "/ja",
+    canonical: "/zh-TW",
     languages: {
       "en": "/",
       "zh-CN": "/zh",
@@ -36,11 +36,11 @@ export const metadata: Metadata = {
   // Open Graph
   openGraph: {
     type: "website",
-    locale: "ja_JP",
+    locale: "zh_TW",
     url: siteConfig.url,
     title: siteConfig.name,
     description: siteConfig.description,
-    siteName: "デュアルタスクポモドーロ",
+    siteName: "雙任務番茄鐘",
     images: [
       {
         url: siteConfig.ogImage,
@@ -57,17 +57,17 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    creator: "@your_handle", // あなたのTwitterハンドルに置き換えてください
+    creator: "@your_handle", // 请替换为您的Twitter handle
   },
 }
 
-export default function JaLayout({
+export default function ZhTwLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="ja" suppressHydrationWarning>
+    <html lang="zh-TW" suppressHydrationWarning>
       <body className={inter.className}>{children}</body>
     </html>
   )
