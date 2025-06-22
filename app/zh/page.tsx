@@ -28,6 +28,7 @@ import { useTheme } from "../hooks/use-theme"
 import { useLanguage } from "../hooks/use-language"
 import { TaskCompletionDialog } from "../components/task-completion-dialog"
 import { translations } from "../i18n/translations"
+import { LandingSections } from "../components/landing-sections"
 
 export default function PomodoroAppZh() {
   const { tasks, activeTasks, addTask, toggleTask, deleteTask, editTask, addTimeToTask, reorderTasks } = useTasks()
@@ -115,7 +116,7 @@ export default function PomodoroAppZh() {
         <h1 className="sr-only">{t.appTitle} - {t.appSubtitle}</h1>
         
         {/* Main Layout - Two Columns */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div id="main-app" className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Timer */}
           <div className="lg:col-span-2 space-y-6">
             {/* 双任务模式开关 */}
@@ -264,6 +265,10 @@ export default function PomodoroAppZh() {
           onBreak={confirmBreak}
           language="zh"
         />
+      </div>
+
+      <div className="max-w-7xl mx-auto p-4 mt-16">
+        <LandingSections t={t} />
       </div>
     </div>
   )
