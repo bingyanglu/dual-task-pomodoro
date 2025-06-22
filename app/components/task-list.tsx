@@ -165,17 +165,19 @@ export function TaskList({
           <div className="text-center">
             <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{todayCount}</div>
             <div className="text-sm text-slate-600 dark:text-gray-400">
-              {language === "zh" ? "今日番茄" : "Today's Pomodoros"}
+              {language === "zh" ? "今日番茄" : language === "ja" ? "今日のポモドーロ" : "Today's Pomodoros"}
             </div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-slate-700 dark:text-gray-300">
               {language === "zh"
                 ? `第 ${Math.floor((currentRound - 1) / 2) + 1} 轮`
+                : language === "ja"
+                ? `ラウンド ${Math.floor((currentRound - 1) / 2) + 1}`
                 : `Round ${Math.floor((currentRound - 1) / 2) + 1}`}
             </div>
             <div className="text-sm text-slate-600 dark:text-gray-400">
-              {language === "zh" ? "当前轮次" : "Current Round"}
+              {language === "zh" ? "当前轮次" : language === "ja" ? "現在のラウンド" : "Current Round"}
             </div>
           </div>
         </div>
@@ -191,17 +193,17 @@ export function TaskList({
           {dualTaskMode && activeTasks.length >= 2 && (
             <div className="flex gap-2 mt-2">
               <Badge className="bg-blue-500 text-white">
-                {language === "zh" ? "任务A" : "Task A"}: {activeTasks[0]?.title}
+                {language === "zh" ? "任务A" : language === "ja" ? "タスクA" : "Task A"}: {activeTasks[0]?.title}
               </Badge>
               <Badge className="bg-purple-500 text-white">
-                {language === "zh" ? "任务B" : "Task B"}: {activeTasks[1]?.title}
+                {language === "zh" ? "任务B" : language === "ja" ? "タスクB" : "Task B"}: {activeTasks[1]?.title}
               </Badge>
             </div>
           )}
           {!dualTaskMode && activeTasks.length >= 1 && (
             <div className="flex gap-2 mt-2">
               <Badge className="bg-blue-500 text-white">
-                {language === "zh" ? "当前任务" : "Current Task"}: {activeTasks[0]?.title}
+                {language === "zh" ? "当前任务" : language === "ja" ? "現在のタスク" : "Current Task"}: {activeTasks[0]?.title}
               </Badge>
             </div>
           )}

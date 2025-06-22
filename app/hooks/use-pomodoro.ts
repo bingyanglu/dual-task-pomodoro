@@ -70,8 +70,8 @@ export function usePomodoro(activeTasks: Task[], addTimeToTask: (taskTitle: stri
     const taskB = activeTasks[1]
 
     return {
-      taskAName: taskA?.title || "任务A",
-      taskBName: taskB?.title || "任务B",
+      taskAName: taskA?.title || "Task A",
+      taskBName: taskB?.title || "Task B",
       hasValidTasks: activeTasks.length >= 2,
     }
   }, [activeTasks, settings.dualTaskMode])
