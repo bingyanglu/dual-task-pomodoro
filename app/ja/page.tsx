@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { Switch } from "@/components/ui/switch"
 import {
   Play,
   Pause,
@@ -27,7 +28,6 @@ import { useTheme } from "../hooks/use-theme"
 import { useLanguage } from "../hooks/use-language"
 import { TaskCompletionDialog } from "../components/task-completion-dialog"
 import { translations } from "../i18n/translations"
-import { Switch } from "@/components/ui/switch"
 
 export default function PomodoroAppJa() {
   const { tasks, activeTasks, addTask, toggleTask, deleteTask, editTask, addTimeToTask, reorderTasks } = useTasks()
