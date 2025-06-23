@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import type { Task } from "../types/task"
 
 export function useTasks() {
@@ -104,21 +104,44 @@ export function useTasks() {
   }
 
   // 新增：重新排序任务
-  const reorderTasks = (startIndex: number, endIndex: number) => {
-    setDragOrder((prevOrder) => {
-      // 确保索引在有效范围内
-      if (startIndex < 0 || startIndex >= prevOrder.length || endIndex < 0 || endIndex >= prevOrder.length) {
-        return prevOrder
-      }
+  const reorderTasks = useCallback(
+    (startIndex: number, endIndex: number) => {
+      setDragOrder((prevDragOrder) => {
+        // Get the list of incomplete task IDs, sorted by the current dragOrder.
+        const incompleteTaskIds = prevDragOrder.filter((id) => {
+          const task = tasks.find((t) => t.id === id)
+          return task && !task.completed
+        })
 
-      // 创建新数组并执行重排序
-      const result = Array.from(prevOrder)
-      const [removed] = result.splice(startIndex, 1)
-      result.splice(endIndex, 0, removed)
+        if (
+          startIndex < 0 ||
+          startIndex >= incompleteTaskIds.length ||
+          endIndex < 0 ||
+          endIndex >= incompleteTaskIds.length
+        ) {
+          return prevDragOrder
+        }
 
-      return result
-    })
-  }
+        const draggedId = incompleteTaskIds[startIndex]
+        // The id of the item we are dropping on
+        const droppedOnId = incompleteTaskIds[endIndex]
+
+        const newOrder = [...prevDragOrder]
+        const fromIndex = newOrder.indexOf(draggedId)
+        const toIndex = newOrder.indexOf(droppedOnId)
+
+        if (fromIndex === -1 || toIndex === -1) {
+          return prevDragOrder
+        }
+
+        const [removed] = newOrder.splice(fromIndex, 1)
+        newOrder.splice(toIndex, 0, removed)
+
+        return newOrder
+      })
+    },
+    [tasks],
+  )
 
   // 获取排序后的任务列表：未完成的在前，已完成的在后，同时考虑拖拽顺序
   const sortedTasks = [...tasks].sort((a, b) => {

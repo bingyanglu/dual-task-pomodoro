@@ -130,19 +130,7 @@ export function TaskList({
   const handleDrop = (e: React.DragEvent, dropIndex: number) => {
     e.preventDefault()
     if (draggedIndex !== null && draggedIndex !== dropIndex) {
-      console.log("Reordering from", draggedIndex, "to", dropIndex)
-      // 计算在原始 tasks 数组中未完成任务的索引
-      const incompleteTaskIds = tasks.filter(task => !task.completed).map(task => task.id)
-      const draggedTaskId = incompleteTaskIds[draggedIndex]
-      const dropTaskId = incompleteTaskIds[dropIndex]
-      
-      // 找到这些任务在原始数组中的索引
-      const originalDraggedIndex = tasks.findIndex(task => task.id === draggedTaskId)
-      const originalDropIndex = tasks.findIndex(task => task.id === dropTaskId)
-      
-      if (originalDraggedIndex !== -1 && originalDropIndex !== -1) {
-        onReorderTasks(originalDraggedIndex, originalDropIndex)
-      }
+      onReorderTasks(draggedIndex, dropIndex)
     }
     setDraggedIndex(null)
     setDragOverIndex(null)
